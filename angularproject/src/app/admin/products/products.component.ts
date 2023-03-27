@@ -12,8 +12,8 @@ declare var Toast: any;
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-products!: productModel[]; 
-// For Image 
+products!: productModel[];
+// For Image
 SelectedImage:File=null as any;
 
   constructor(private proser:ProductService) {
@@ -22,7 +22,7 @@ SelectedImage:File=null as any;
 
   ngOnInit(): void {
 this.proser.AllProducts.subscribe(res=>{
-  
+
   this.products=res
 console.log(this.products);
 
@@ -41,5 +41,26 @@ console.log(this.products);
     $("#AddEmpImage").fadeIn("fast").attr('src',tmppath);
     this.SelectedImage=<File>event.target.files[0];
   }
-}
+  add() {
+    var message;
+  const fd=new FormData();
+  fd.append('image',this.SelectedImage);
+  fd.append('name',$("#name").vall());
+  fd.append('category',$("#category").val());
+  fd.append('brand',$("#brand").val());
+  fd.append('price',$("#price").val());
+  fd.append('description',$("#description").val());
+      this.proser.add(fd).subscribe (
+        res=>{
+          message=res;
+          Toast.fire({
+            type:"success",
+            title:message});
+            this.proser.getFromDb("");
+          },
+      error =>{error.error.error.forEach((element: any)=>{toastr.error("Error", element); });
+      });
+  }
+  }
+
 
